@@ -11,6 +11,7 @@ import {
   ZodNullable,
   ZodEffects,
   ZodEnum,
+  ZodDefault,
 } from "zod";
 
 import { ZodDecoderFatalError } from "./errors";
@@ -103,6 +104,36 @@ export abstract class ZodDecoder<T extends ZodTypeAny, Input = unknown> {
     }
   }
 
+  safeDecodeOptional(
+    ctx: DecodeContext,
+    type: ZodOptional<ZodTypeAny>,
+    input: unknown,
+  ): SafeDecodeResult<unknown, any> {
+    if (input == null) {
+      return {
+        success: true,
+        data: undefined,
+      };
+    } else {
+      return this._safeDecode(ctx, input, type.unwrap());
+    }
+  }
+
+  safeDecodeNullable(
+    ctx: DecodeContext,
+    type: ZodNullable<ZodTypeAny>,
+    input: unknown,
+  ): SafeDecodeResult<unknown, any> {
+    if (input == null) {
+      return {
+        success: true,
+        data: null,
+      };
+    } else {
+      return this._safeDecode(ctx, input, type.unwrap());
+    }
+  }
+
   abstract safeDecodeObject(
     ctx: DecodeContext,
     type: ZodObject<ZodRawShape>,
@@ -149,9 +180,9 @@ export abstract class ZodDecoder<T extends ZodTypeAny, Input = unknown> {
     }
   }
 
-  safeDecodeOptional(
+  safeDecodeDefault(
     ctx: DecodeContext,
-    type: ZodOptional<ZodTypeAny>,
+    type: ZodDefault<ZodTypeAny>,
     input: unknown,
   ): SafeDecodeResult<unknown, any> {
     if (input == null) {
@@ -160,22 +191,7 @@ export abstract class ZodDecoder<T extends ZodTypeAny, Input = unknown> {
         data: undefined,
       };
     } else {
-      return this._safeDecode(ctx, input, type.unwrap());
-    }
-  }
-
-  safeDecodeNullable(
-    ctx: DecodeContext,
-    type: ZodNullable<ZodTypeAny>,
-    input: unknown,
-  ): SafeDecodeResult<unknown, any> {
-    if (input == null) {
-      return {
-        success: true,
-        data: null,
-      };
-    } else {
-      return this._safeDecode(ctx, input, type.unwrap());
+      return this._safeDecode(ctx, input, type.removeDefault());
     }
   }
 
@@ -217,14 +233,16 @@ export abstract class ZodDecoder<T extends ZodTypeAny, Input = unknown> {
         return this.safeDecodeBoolean(ctx, input);
       } else if (type instanceof ZodEnum) {
         return this.safeDecodeEnum(ctx, type, input);
-      } else if (type instanceof ZodObject) {
-        return this.safeDecodeObject(ctx, type, input);
-      } else if (type instanceof ZodArray) {
-        return this.safeDecodeArray(ctx, type, input);
       } else if (type instanceof ZodOptional) {
         return this.safeDecodeOptional(ctx, type, input);
       } else if (type instanceof ZodNullable) {
         return this.safeDecodeNullable(ctx, type, input);
+      } else if (type instanceof ZodObject) {
+        return this.safeDecodeObject(ctx, type, input);
+      } else if (type instanceof ZodArray) {
+        return this.safeDecodeArray(ctx, type, input);
+      } else if (type instanceof ZodDefault) {
+        return this.safeDecodeDefault(ctx, type, input);
       } else if (type instanceof ZodEffects) {
         return this._safeDecode(ctx, input, type.sourceType());
       }

@@ -1,6 +1,6 @@
 {
   "name": "@monoid-dev/zod-endec",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "commonjs",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

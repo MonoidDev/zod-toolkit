@@ -106,7 +106,7 @@ describe("QueryDecoder", () => {
     });
   });
 
-  it("should decode optional", () => {
+  it("should decode optional and nullable", () => {
     expect(
       new QueryDecoder(z.object({ a: z.string().optional() })).decode("a=a"),
     ).toMatchObject({
@@ -131,6 +131,14 @@ describe("QueryDecoder", () => {
       ),
     ).toMatchObject({
       a: null,
+    });
+  });
+
+  it("should decode default", () => {
+    expect(
+      new QueryDecoder(z.object({ a: z.string().default("a") })).decode(""),
+    ).toMatchObject({
+      a: undefined,
     });
   });
 
