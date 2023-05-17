@@ -59,7 +59,7 @@ function App() {
 
 Get the nice report of whatever errors in your data!
 
-![preview](./docs/preview.jpg)
+![preview](https://raw.githubusercontent.com/MonoidDev/zod-endec/master/packages/zod-monaco-reporter/docs/preview.jpg)
 
 See it live on CodeSandbox: TODO
 
