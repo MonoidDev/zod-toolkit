@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 
-import { z } from "zod";
+import { SafeParseError, z } from "zod";
 
 const LazyZodMonacoReporter = React.lazy(
   () => import("@monoid-dev/zod-monaco-reporter"),
@@ -50,6 +50,11 @@ function App() {
         primitive: 1,
       }}
       schema={schema}
+    />,
+
+    <LazyZodMonacoReporter
+      value={{}}
+      error={(schema.safeParse({}) as SafeParseError<{}>).error}
     />,
   ];
 

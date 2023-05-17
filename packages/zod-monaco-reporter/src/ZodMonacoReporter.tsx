@@ -4,20 +4,21 @@ import Editor, { BeforeMount } from "@monaco-editor/react";
 import jsonToAstParse from "json-to-ast";
 import prettierBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
-import { Schema } from "zod";
+import { Schema, ZodError } from "zod";
 
 import { mapZodErrorToMarkersForJsonAst } from "./mapZodErrorToMarkersForJsonAst";
 
 export interface ZodMonacoReporterProps {
   value: unknown;
-  schema: Schema;
+  error?: ZodError;
+  schema?: Schema;
   name?: string;
 }
 
 const markerOwner = "zod";
 
 export function ZodMonacoReporter(props: ZodMonacoReporterProps) {
-  const { value, schema, name } = props;
+  const { value, error, schema, name } = props;
 
   const editorPath = useMemo(() => {
     if (name) return name;
@@ -34,13 +35,20 @@ export function ZodMonacoReporter(props: ZodMonacoReporterProps) {
     [value],
   );
 
-  const zodErrors = useMemo(() => {
-    return schema.safeParse(value);
-  }, [value, schema]);
+  const finalError = useMemo(() => {
+    if (error) {
+      return error;
+    }
+    const r = schema?.safeParse(value);
+    if (r?.success) {
+      return undefined;
+    }
+    return r?.error;
+  }, [value, error, schema]);
 
   const beforeMount: BeforeMount = useCallback(
     (monaco) => {
-      if (zodErrors.success) return;
+      if (!finalError) return;
 
       const formattedAst = jsonToAstParse(formatted);
 
@@ -53,10 +61,10 @@ export function ZodMonacoReporter(props: ZodMonacoReporterProps) {
       monaco.editor.setModelMarkers(
         model,
         markerOwner,
-        mapZodErrorToMarkersForJsonAst(formattedAst, zodErrors.error),
+        mapZodErrorToMarkersForJsonAst(formattedAst, finalError),
       );
     },
-    [zodErrors],
+    [finalError],
   );
 
   return (
