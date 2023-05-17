@@ -76,6 +76,7 @@ Usage:
 Parameters:
 
 1. value: Any value needs validation. Notice that currently the value needs to be JSON serializable or it cannot be displayed correctly.
-2. schema: The zod schema used to verify the `value`.
-3. name?: Optional. The name of the data. It needs to be unique for the Monaco Editor the match each `value` to its own `Model`. If you don't provide one, we generate a random name for you.
+2. schema?: The zod schema used to verify the `value`.
+3. error?: A ZodError for the result. The errors will be rendered regardless of the schema. It is useful if you don't know the schema.
+4. name?: Optional. The name of the data. It needs to be unique for the Monaco Editor the match each `value` to its own `Model`. If you don't provide one, we generate a random name for you.
 
