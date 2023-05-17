@@ -1,6 +1,6 @@
 {
   "name": "@monoid-dev/zod-monaco-reporter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "commonjs",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MonoidDev/zod-endec"
+    "url": "https://github.com/MonoidDev/zod-endec/tree/master/packages/zod-monaco-reporter"
   },
   "scripts": {
     "dev": "tsx src/index.ts",
