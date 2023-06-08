@@ -6,11 +6,11 @@ import { ParsePath, ZodError } from "zod";
 import { indent } from "./utils";
 
 const equalPath = (p1: ParsePath, p2: ParsePath) => {
-  return p1.join(".") === p2.join(".");
+  return p1.length === p2.length && p1.every((a, i) => a === p2[i]);
 };
 
 const isDirectChild = (p1: ParsePath, p2: ParsePath) => {
-  return p1.join(".").startsWith(p2.join(".")) && p1.length === p2.length + 1;
+  return equalPath(p1, p2.slice(0, p2.length - 1));
 };
 
 export const mapZodErrorToMarkersForJsonAst = (
@@ -46,7 +46,7 @@ export const mapZodErrorToMarkersForJsonAst = (
 
         const detachedChildrenErrors = error.issues.filter(
           (issue) =>
-            isDirectChild(issue.path, currentPath) &&
+            isDirectChild(currentPath, issue.path) &&
             !node.children.find((c) => c.key.value === issue.path.at(-1)),
         );
 
