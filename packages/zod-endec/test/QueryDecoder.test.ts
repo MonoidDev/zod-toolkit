@@ -138,7 +138,13 @@ describe("QueryDecoder", () => {
     expect(
       new QueryDecoder(z.object({ a: z.string().default("a") })).decode(""),
     ).toMatchObject({
-      a: undefined,
+      a: "a",
+    });
+
+    expect(
+      new QueryDecoder(z.object({ a: z.number().default(0) })).decode(""),
+    ).toMatchObject({
+      a: 0,
     });
   });
 

@@ -188,7 +188,7 @@ export abstract class ZodDecoder<T extends ZodTypeAny, Input = unknown> {
     if (input == null) {
       return {
         success: true,
-        data: undefined,
+        data: type._def.defaultValue(),
       };
     } else {
       return this._safeDecode(ctx, input, type.removeDefault());
