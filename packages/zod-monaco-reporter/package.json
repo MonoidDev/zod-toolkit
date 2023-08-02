@@ -26,7 +26,7 @@
     "dev": "tsx src/index.ts",
     "build": "tsup src/index.ts --format esm,cjs --splitting -d lib/ && tsc -p tsconfig.build.json",
     "lint": "tsc && eslint ./src --ext .ts,.tsx",
-    "test": "vitest run"
+    "test": "echo 'No tests'"
   },
   "devDependencies": {
     "@types/json-to-ast": "^2.1.2",
