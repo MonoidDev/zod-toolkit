@@ -146,6 +146,22 @@ describe("QueryDecoder", () => {
     ).toMatchObject({
       a: 0,
     });
+
+    expect(
+      new QueryDecoder(z.object({ a: z.string().array().default([]) })).decode(
+        "",
+      ),
+    ).toMatchObject({
+      a: [],
+    });
+
+    expect(
+      new QueryDecoder(z.object({ a: z.string().array().default([]) })).decode(
+        "a=string",
+      ),
+    ).toMatchObject({
+      a: ["string"],
+    });
   });
 
   it("should go through effects", () => {

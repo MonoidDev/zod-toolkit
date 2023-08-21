@@ -1,6 +1,6 @@
 {
   "name": "@monoid-dev/zod-endec",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "commonjs",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -30,6 +30,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
+    "vite": "^4.3.2"
   },
   "publishConfig": {
     "access": "public"
