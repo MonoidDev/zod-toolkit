@@ -1,6 +1,6 @@
 {
   "name": "@monoid-dev/zod-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "commonjs",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -35,6 +35,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "zod": "~3.21.2"
+    "zod": "^3.22.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@monoid-dev/zod-endec",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "commonjs",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -36,6 +36,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "zod": "~3.21.2"
+    "zod": "^3.22.4"
   }
 }
